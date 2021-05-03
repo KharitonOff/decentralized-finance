@@ -2,7 +2,7 @@
 export function getLowestPriceOfRecentXIntervals(historicData: number[], numberOfIntervalsToBeRegarded: number, randomizerMax?: number): number {
     let lowestPrice = 1000000000000
     let counter = 0
-    const limit = (randomizerMax === undefined) ? numberOfIntervalsToBeRegarded : Math.floor(Math.random()*(randomizerMax-numberOfIntervalsToBeRegarded+1)+numberOfIntervalsToBeRegarded);
+    const limit = (randomizerMax === undefined) ? numberOfIntervalsToBeRegarded : Math.floor(Math.random() * (randomizerMax - numberOfIntervalsToBeRegarded + 1) + numberOfIntervalsToBeRegarded);
 
     const startPosition = historicData.length - limit
 
@@ -22,7 +22,7 @@ export function getHighestPriceOfRecentXIntervals(historicData: number[], number
 
     let highestPrice = 0
     let counter = 0
-    const limit = (randomizerMax === undefined) ? numberOfIntervalsToBeRegarded : Math.floor(Math.random()*(randomizerMax-numberOfIntervalsToBeRegarded+1)+numberOfIntervalsToBeRegarded);
+    const limit = (randomizerMax === undefined) ? numberOfIntervalsToBeRegarded : Math.floor(Math.random() * (randomizerMax - numberOfIntervalsToBeRegarded + 1) + numberOfIntervalsToBeRegarded);
 
     const startPosition = historicData.length - limit
 

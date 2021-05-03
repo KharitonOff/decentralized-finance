@@ -33,6 +33,11 @@ export class BinanceConnector {
         return currentPrices
     }
 
+    public async getCurrentSymbolPrice(symbol: string): Promise<number> {
+        const pricesResult = await this.binance.prices(symbol);
+        return Number(pricesResult[symbol])
+    }
+
     public async cancelAllOrders(pair: string) {
         await this.binance.cancelAll(pair)
     }

@@ -1,0 +1,44 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Launch Program",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}/dist/gambling-strategies/test-gambler.js",
+      "outFiles": [
+        "${workspaceFolder}/**/*.js"
+      ],
+      "envFile": "${workspaceFolder}/.env",
+      "args": [
+        "0.7",
+        "0.3",
+        "10",
+        "20"
+      ]
+    },
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Launch Caterpillar",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}/dist/gambling-strategies/caterpillar.js",
+      "outFiles": [
+        "${workspaceFolder}/**/*.js"
+      ],
+      "envFile": "${workspaceFolder}/.env",
+      "args": [
+        "5",
+        "ETHUSDT"
+      ]
+    }
+  ]
+}
