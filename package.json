@@ -39,6 +39,7 @@
     "fs-extra": "^9.1.0",
     "husky": "^4.3.7",
     "jest": "^26.6.3",
+    "moment": "^2.29.1",
     "node-binance-api": "^0.12.5",
     "os": "^0.1.1",
     "play-sound": "^1.1.3",

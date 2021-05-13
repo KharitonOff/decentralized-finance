@@ -1,13 +1,11 @@
 import * as colors from "colors"
+import * as moment from "moment"
 
-
-let dots = ''
 process.stdout.cursorTo(0, 0)
 process.stdout.clearScreenDown()
 
 let topY = 100
-let columns: any[] = []
-let rows: string[] = []
+const priceRange = 50
 
 function plotFirstThird(previous: number, curent: number, indicator: number, interval?: number) {
     let symbol
@@ -48,24 +46,31 @@ function plotInactivityWindow(symbol: string, interval: number, entryPrice: numb
     return symbol
 }
 
-function createY(price: number, entryPrice: number, history: number[], interval?: number) {
-    let botomY = topY - 20
-    topY = botomY < price && price < topY ? topY : price + 5
-    botomY = topY - 20
-    for (let index = 0; index < 20; index++) {
+function createGraph(price: number, entryPrice: number = 0, history: number[], buyThreshold?: number, sellThreshold?: number, interval?: number) {
+    const rows: string[] = []
+    let botomY = topY - priceRange
+    topY = botomY < price && price < topY ? topY : price + (priceRange / 2)
+    botomY = topY - priceRange
+    for (let index = 0; index < priceRange; index++) {
         let indicator = topY - index
         let row = ("      " + indicator).slice(-7)
-        row = indicator == entryPrice ? colors.blue(row) : row
+        row = Number(indicator) == price ? colors.white(row) : row
+        row = Number(indicator) == buyThreshold ? colors.green(row) : row
+        row = Number(indicator) == sellThreshold ? colors.red(row) : row
+        row = Number(indicator) == entryPrice ? colors.blue(row) : row
         row += ` |`
         rows.push(row)
     }
-
+    rows.push(`---------`)
+    rows.push(`     hh:|`)
+    rows.push(`     mm:|`)
+    rows.push(`     ss |`)
     for (let time = 0; time < history.length; time++) {
         const previous = history[time - 1]
         const curent = history[time]
         const next = history[time + 1]
 
-        for (let index = 0; index < 20; index++) {
+        for (let index = 0; index < priceRange; index++) {
             let indicator = topY - index
             let symbol: string
             //first column
@@ -80,25 +85,45 @@ function createY(price: number, entryPrice: number, history: number[], interval?
             symbol = plotLastThird(next, curent, indicator, interval)
             rows[index] += interval ? plotInactivityWindow(symbol, interval, entryPrice, indicator) : symbol
         }
+        var date = new Date(Date.now() - ((history.length - time) * 11 * 1000))
+        rows[rows.length - 4] += (`---`)
+        rows[rows.length - 3] += (`${('0' + date.getHours()).slice(-2)}:`)
+        rows[rows.length - 2] += (`${('0' + date.getMinutes()).slice(-2)}:`)
+        rows[rows.length - 1] += (`${('0' + date.getSeconds()).slice(-2)} `)
     }
+    // rows.push(` ${colors.bgBlue(entryPrice.toString())} - position entry price = Math.max(caterpillarsTail, entryPrice, highestPrice) - caterpillarLength`)
+    // if (buyThreshold) {
+    //     rows.push(` ${colors.green(buyThreshold.toString())} - buy thresold = lowestPrice + caterpillarLength`)
+    // }
+    // if (sellThreshold) {
+    //     rows.push(` ${colors.red(sellThreshold.toString())} - sell thresold = Math.max(caterpillarsTail, entryPrice, highestPrice) - caterpillarLength`)
+    // }
+    return rows
+}
+export function plotGraph(price: number, entryPrice: number = 0, history: number[], buyThreshold?: number, sellThreshold?: number, interval?: number) {
+    process.stdout.cursorTo(0, 0);
+    const rows = createGraph(price, entryPrice, history, buyThreshold, sellThreshold, interval)
+    const graph = `\r${rows.join('\n')}`
+    // process.stdout.write(graph)
+    return graph
 }
 
-const history = [2932, 2933, 2935, 2933, 2936, 2937, 2936]
-createY(2937, 2933, history, 5)
-process.stdout.write(rows.join('\n'))
+// const history = [2932, 2933, 2935, 2933, 2936, 2937, 2936]
+// plotGraph(2937, 2933, history, 5)
+// process.stdout.write(rows.join('\n'))
 
-let tmrID = setInterval(() => {
-    // history.shift()
-    history.push(Number((2930 + Math.random() * 10).toFixed(0)))
-    rows = []
-    process.stdout.cursorTo(0, 0);
-    createY(2937, 2933, history, 5)
-    const graph = `\r${rows.join('\n')}`
-    process.stdout.write(graph)
+// let tmrID = setInterval(() => {
+//     // history.shift()
+//     history.push(Number((2930 + Math.random() * 10).toFixed(0)))
+//     rows = []
+//     process.stdout.cursorTo(0, 0);
+//     plotGraph(2937, 2933, history, 5)
+//     const graph = `\r${rows.join('\n')}`
+//     process.stdout.write(graph)
 
-}, 1000)
+// }, 1000)
 
-setTimeout(() => {
-    clearInterval(tmrID)
-    console.log(`\rstop`)
-}, 13500)
+// setTimeout(() => {
+//     clearInterval(tmrID)
+//     console.log(`\rstop`)
+// }, 13500)
