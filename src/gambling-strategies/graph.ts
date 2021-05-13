@@ -1,7 +1,8 @@
 import * as colors from "colors"
+import * as readline from 'readline'
 
-process.stdout.cursorTo(0, 0)
-process.stdout.clearScreenDown()
+readline.cursorTo(process.stdout, 0, 0)
+readline.clearScreenDown(process.stdout)
 
 let topY = 100
 const priceRange = 50
