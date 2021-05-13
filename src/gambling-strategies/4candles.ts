@@ -45,10 +45,10 @@ export class BuyLowSellHighGambler {
             let buySignal = this.priceHistory.length > 4 //start calculating signals after having 4 historical prices
             let sellSignal = this.priceHistory.length > 4 //start calculating signals after having 4 historical prices
             for (let i = this.priceHistory.length - 4; i < this.priceHistory.length; i++) {
-                if (buySignal && this.priceHistory[i - 1] > this.priceHistory[i]) {
+                if (buySignal && this.priceHistory[i - 1] >= this.priceHistory[i]) {
                     buySignal = false
                 }
-                if (sellSignal && this.priceHistory[i - 1] < this.priceHistory[i]) {
+                if (sellSignal && this.priceHistory[i - 1] <= this.priceHistory[i]) {
                     sellSignal = false
                 }
             }
