@@ -1,5 +1,4 @@
 import * as colors from "colors"
-import * as moment from "moment"
 
 process.stdout.cursorTo(0, 0)
 process.stdout.clearScreenDown()
